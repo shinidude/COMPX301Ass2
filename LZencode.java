@@ -1,6 +1,5 @@
 import java.io.*;
 import java.util.ArrayList;
-import java.util.List;
 
 public class LZencode {
     public static void main(String[] args) {
@@ -21,42 +20,37 @@ public class LZencode {
             e.printStackTrace();
         }
 
-        // encode here
-        /*
-         * LOOP through each "nibble"
-         *     add to current phrase
-         *     WHILE tracker is not at end of dict
-         *         IF current phrase doesn't match known phrases
-         *             find most recently matching phrase
-         *             add to dictionary
-         *             reset current phrase
-         *         ENDIF
-         *     ENDWHILE
-         * ENDLOOP
-         */
+        /* ENCODING DONE HERE */
+        // Vars for encoding
         String phrase="";
-        int tracker=0;
         int lastPhrasePos = 0;
+        // ArrayLists to manage phrases and their encodings
         ArrayList<String> dictPhrases = new ArrayList<String>();
         ArrayList<String> dictEncoded = new ArrayList<String>();
+        // init empty 0th indices
         dictPhrases.add("");
         dictEncoded.add("");
+        // For each element in the hex characters (each nibble)
         for (int i=0; i<hexChars.length(); i++) {
-            phrase += String.valueOf(hexChars.charAt(i));
+            phrase += String.valueOf(hexChars.charAt(i)); // Add character to current phrase
 
-            if (dictPhrases.contains(phrase)) {
-                lastPhrasePos = dictPhrases.indexOf(phrase);
-            } else {
-                if (phrase.length() == 1) {
-                    lastPhrasePos = 0;
+            if (dictPhrases.contains(phrase)) { // If phrase has been encoded
+                lastPhrasePos = dictPhrases.indexOf(phrase); // Get pos of greatest matching phrase so far
+                if (i == hexChars.length()-1) { // If on last character of input
+                    // Then we must have no more mismatched characters, so
+                    dictEncoded.add(lastPhrasePos+" $"); // Add delim and position of matching phrase 
                 }
-                dictPhrases.add(phrase);
-                dictEncoded.add(lastPhrasePos + " " + String.valueOf( phrase.charAt( phrase.length()-1 ) ));
-                phrase = "";
+            } else { // phrase up to here hasn't been encoded
+                dictPhrases.add(phrase); // Add phrase to dictionary of known phrases
+                dictEncoded.add(lastPhrasePos + " " + String.valueOf( phrase.charAt( phrase.length()-1 ) )); // add phrase encoding to dictionary
+                phrase = ""; // reset current phrase
+                lastPhrasePos = 0; // reset last phrase pos
             }
         }
 
-        System.out.println(dictPhrases.toString());
-        System.out.println(dictEncoded.toString());
+        // For each item in dictionary of encoded phrases
+        for (int i=1; i<dictEncoded.size(); i++) {
+            System.out.println(dictEncoded.get(i)); // Print encoding to std output
+        }
     }
 }
