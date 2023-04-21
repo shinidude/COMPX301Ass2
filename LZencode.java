@@ -42,7 +42,8 @@ public class LZencode {
                 }
             } else { // phrase up to here hasn't been encoded
                 dictPhrases.add(phrase); // Add phrase to dictionary of known phrases
-                dictEncoded.add(lastPhrasePos + " " + String.valueOf( phrase.charAt( phrase.length()-1 ) )); // add phrase encoding to dictionary
+                // the parseInt converts hex to decimal value
+                dictEncoded.add(lastPhrasePos + " " + Integer.parseInt( String.valueOf(  phrase.charAt( phrase.length()-1 )  ), 16 )); // add phrase encoding to dictionary
                 phrase = ""; // reset current phrase
                 lastPhrasePos = 0; // reset last phrase pos
             }
