@@ -1,7 +1,7 @@
 import java.util.Arrays;
 
 class ByteHex {
-    public String [] convertB2H(byte[] bytes){
+    public static String [] convertB2H(byte[] bytes){
         String [] stringArr = new String [bytes.length];  
         for(int i= 0; i<bytes.length; i++){
             stringArr[i] = String.format("%02x", bytes[i]);
@@ -9,7 +9,6 @@ class ByteHex {
         return stringArr ;
     }
 
-    //Testing purposes
     // public static void main(String[] args) {
     //     byte [] bytes = {0, 10, 20, 8, 15, 25};
 
