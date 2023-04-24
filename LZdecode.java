@@ -9,11 +9,8 @@ public class LZdecode {
     //The dictionary for
     static  ArrayList<Integer> phraseNumList = new ArrayList<Integer>();//where the phrase numbers are listed
     static ArrayList<Integer> misMatchSymbols = new ArrayList<Integer>(); //where the mismatched numbers are listed 
-    static ArrayList<Integer> entryList = new ArrayList<>();//where the initial entries are added 
 	static ArrayList <String> hexSymbols = new ArrayList<String>();//list of decimal mismatch symbols turned into hex
 	static ArrayList <String> trackerlist  = new ArrayList<>();
-	static String testing  =""; 
-    
   public static void main(String[] args) {
     try {
         Scanner sc = new Scanner(System.in);
