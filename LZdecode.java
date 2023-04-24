@@ -1,9 +1,7 @@
 import java.io.ByteArrayOutputStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.regex.MatchResult;
 
 public class LZdecode {
     //The dictionary for
@@ -40,12 +38,12 @@ public class LZdecode {
     }
   }
 
-  private static void dec2Hex(){
-	for(int i = 0; i<misMatchSymbols.size(); i++){
-		hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
+	private static void dec2Hex(){
+		for(int i = 0; i<misMatchSymbols.size(); i++){
+			hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
+		}
+		System.out.println(hexSymbols);
 	}
-	System.out.println(hexSymbols);
-  }
 
 	public static void Compare(){
 		try {
@@ -90,5 +88,4 @@ public class LZdecode {
     	String s = new String(byteStream.toByteArray(), Charset.forName("UTF-8"));
 		System.out.println(s);
 	} 
-    
 }
