@@ -30,8 +30,9 @@ public class LZdecode {
             	//if it is the end of the values decoded 
 				phraseNumList.add(Integer.parseInt(encodedOutput[0]));//pasin
 				if(encodedOutput[1].toString().compareTo("$") == 0){
-    			break;//Break the 
-			}
+    				break;//Break the 
+				}
+	
 			misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
         	}
 			reader.close(); //Closing the scanner 
@@ -89,15 +90,18 @@ public class LZdecode {
 	private static void hex2String(String hex){
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(System.out);
-
-			byte [] byteArr = ByteHex.convertH2B(hex);
+			byte[] byteArr = ByteHex.convertH2B(hex);
+			int [] intArr = new int [byteArr.length];
     		String s = new String(byteArr, Charset.forName("UTF-8"));
-
-	
 			for (byte b : byteArr) {
 				System.out.println(b);
 			}
-		writer.write(s);
+			for(int i= 0; i<byteArr.length;i++){
+				intArr[i]=Byte.toUnsignedInt(byteArr[i]);
+			}
+			for (int i : intArr) {
+				writer.write(i);
+			}
 
 			writer.flush();
 		} catch (IOException e) {
