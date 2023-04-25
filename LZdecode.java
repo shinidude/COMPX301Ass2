@@ -1,14 +1,9 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 public class LZdecode {
     //The dictionary for
@@ -32,8 +27,7 @@ public class LZdecode {
 				if(encodedOutput[1].toString().compareTo("$") == 0){
     				break;//Break the 
 				}
-	
-			misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
+				misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
         	}
 			reader.close(); //Closing the scanner 
 			//Turning the mismatched symbols into hex

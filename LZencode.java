@@ -66,9 +66,16 @@ public class LZencode {
 
             if (dictPhrases.contains(phrase)) { // If phrase has been encoded
                 lastPhrasePos = dictPhrases.indexOf(phrase); // Get pos of greatest matching phrase so far
-                if (j == data.length()-1) { // If on last character of input
-                    // Then we must have no more mismatched characters, so
-                    dictEncoded.add(lastPhrasePos+" $"); // Add delim and position of matching phrase 
+                if (j == data.length()-2) { // If on 2nd last character of input
+                    // Then we may have no more mismatched characters, so
+                    phrase += String.valueOf(data.charAt(j+1)); // Add next character to current phrase
+                    if (dictPhrases.contains(phrase)) {
+                        dictPhrases.add(phrase); // Add phrase to dictionary of known phrases
+                        // the parseInt converts hex to decimal value
+                        dictEncoded.add(lastPhrasePos + " " + Integer.parseInt( String.valueOf(  phrase.charAt( phrase.length()-1 )  ), 16 )); // add phrase encoding to dictionary
+
+                        j++; // increment loop counter to end loop early
+                    }
                 }
             } else { // phrase up to here hasn't been encoded
                 dictPhrases.add(phrase); // Add phrase to dictionary of known phrases
