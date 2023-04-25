@@ -1,6 +1,9 @@
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -59,20 +62,16 @@ public class LZdecode {
 				phraseNum = phraseNumList.get(i);
 				if(phraseNum ==0){//not in the tracklist yet 
 					trackerlist.add(hexSymbols.get(i));//Add it in the tracklist 
-					System.out.println("this is the trackerlist 1");
 					System.out.println(trackerlist);
 				}else{//if it exist in the tracklist 
 					data =  new StringBuilder(trackerlist.get(phraseNum-1));//Grab the data based on he phrased num in the tracklist
 					if(hexSymbols.size()==i){//if there are no hex symbols anymore 
 						trackerlist.add(i,data.toString()); //Add the associated data based on its phrasenumber in the tracker list 
 					}else{//if there are still more symbols 
-						System.out.println("The data the will be joined:" +" "+ data);
 						joinedString = data.append(hexSymbols.get(i)).toString(); //join the associated data before the actual hexSybmol
 						trackerlist.add(i,joinedString);//Add this in the trackerlist 
 					}
 				}
-			System.out.println("this is the trackerlist 2");
-			System.out.println(trackerlist);
     	}
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -87,13 +86,20 @@ public class LZdecode {
 	 * and turns this value into a string 
 	 */
 	private static void decode(String hex){
-		ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    	for (int i = 0; i < hex.length(); i += 2) {
-      		String str = hex.substring(i, i + 2);
-      		int byteVal = Integer.parseInt(str, 16);
-      		byteStream.write(byteVal);
-    	} 
-    	String s = new String(byteStream.toByteArray(), Charset.forName("UTF-8"));
-		System.out.println(s);
+		try {
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
+    		for (int i = 0; i < hex.length(); i += 2) {
+      			String str = hex.substring(i, i + 2);
+      			int byteVal = Integer.parseInt(str, 16);
+      			byteStream.write(byteVal);
+    		} 
+    		String s = new String(byteStream.toByteArray(), Charset.forName("UTF-8"));
+			writer.write(s);
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	} 
 }
