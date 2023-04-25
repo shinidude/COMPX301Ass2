@@ -1,14 +1,9 @@
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
+
 
 public class LZdecode {
     //The dictionary for
@@ -23,36 +18,32 @@ public class LZdecode {
 			String line = "";
 
         	while ((line = reader.readLine())!=null){
-            	//Grabbing the output of the LZencoder 
-            	String [] encodedOutput =  line.split(" ");
-			    // System.out.println(Arrays.toString(encodedOutput));
-
-            	//if it is the end of the values decoded 
-				phraseNumList.add(Integer.parseInt(encodedOutput[0]));//pasin
-				if(encodedOutput[1].toString().compareTo("$") == 0){
-    				break;//Break the 
-				}
-	
-			misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
+					//Grabbing the output of the LZencoder 
+					String [] encodedOutput =  line.split(" ");
+					phraseNumList.add(Integer.parseInt(encodedOutput[0]));//pasin
+					if(encodedOutput[1].toString().compareTo("$") != 0){
+						misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
+					}else{
+						break;
+					}
         	}
 			reader.close(); //Closing the scanner 
 			//Turning the mismatched symbols into hex
 			for(int i = 0; i<misMatchSymbols.size(); i++){
 				hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
 			}
-	
+			
 			//Getting the decoded hex output 
 			decode();
 			//Turning the hex output into string 
-			hex2String(String.join("", trackerlist));
+			displayOutput(String.join("", trackerlist));
     } catch (Exception e) {
         // TODO: handle exception
         e.printStackTrace();
     }
 }
-
 	/**
-	 * Compare()
+	 * decode()
 	 * A method that organises the decoded hex values 
 	 * based on phraseNumber list and available hex symbols 
 	 */
@@ -81,21 +72,16 @@ public class LZdecode {
 		}	
 	}
 
-
 	/**
-	 * decode()
-	 * Takes the joined hex value output 
-	 * and turns this value into a string 
+	 * displayOutput(String hex)
+	 * processes the hex value to become a byte value 
+	 * and dispays it 
 	 */
-	private static void hex2String(String hex){
+	private static void displayOutput(String hex){
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(System.out);
 			byte[] byteArr = ByteHex.convertH2B(hex);
 			int [] intArr = new int [byteArr.length];
-    		String s = new String(byteArr, Charset.forName("UTF-8"));
-			for (byte b : byteArr) {
-				System.out.println(b);
-			}
 			for(int i= 0; i<byteArr.length;i++){
 				intArr[i]=Byte.toUnsignedInt(byteArr[i]);
 			}

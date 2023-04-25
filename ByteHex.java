@@ -1,8 +1,5 @@
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
-
-import javax.xml.crypto.dsig.keyinfo.RetrievalMethod;
 
 class ByteHex {
     public static String [] convertB2H(byte[] bytes){
@@ -20,6 +17,9 @@ class ByteHex {
               int byteVal = Integer.parseInt(str, 16);
               byteStream.write(byteVal);
         } 
+        for (byte i : byteStream.toByteArray()) {
+            System.out.println(i);
+        }
         return  byteStream.toByteArray();
     }
     public static void main(String[] args) {

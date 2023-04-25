@@ -37,8 +37,6 @@ public class LZencode {
                     writer.write(dictEncoded.get(i)); // Print encoding to std output
                     writer.newLine();
                 }
-                writer.write("----"); // Print encoding separator
-                writer.newLine();
                 writer.flush();
             }
         } catch (IOException e) {
