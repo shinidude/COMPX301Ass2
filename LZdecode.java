@@ -73,7 +73,7 @@ public class LZdecode {
 						trackerlist.add(i,joinedString);//Add this in the trackerlist 
 					}
 				}
-    	}
+    		}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -96,10 +96,14 @@ public class LZdecode {
       			byteStream.write(byteVal);
     		} 
     		String s = new String(byteStream.toByteArray(), Charset.forName("UTF-8"));
+<<<<<<< HEAD
 			byte[] val =byteStream.toByteArray();
 			for (byte b : byteStream.toByteArray()) {
 				System.out.println(b);
 			}
+=======
+			writer.write(s);
+>>>>>>> 2812c8277a7691f34be36b8e6b2b9ef4ba03d2a2
 			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
