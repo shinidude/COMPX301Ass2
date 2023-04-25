@@ -16,6 +16,9 @@ class ByteHex {
               String str = hexStr.substring(i, i + 2);
               int byteVal = Integer.parseInt(str, 16);
               byteStream.write(byteVal);
+        } 
+        for (byte i : byteStream.toByteArray()) {
+            System.out.println(i);
         }
         return  byteStream.toByteArray();
     }
