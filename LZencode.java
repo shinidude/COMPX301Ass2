@@ -49,9 +49,16 @@ public class LZencode {
             }
         }
 
-        // For each item in dictionary of encoded phrases
-        for (int i=1; i<dictEncoded.size(); i++) {
-            System.out.println(dictEncoded.get(i)); // Print encoding to std output
+        try {
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
+            // For each item in dictionary of encoded phrases
+            for (int i=1; i<dictEncoded.size(); i++) {
+                writer.write(dictEncoded.get(i)); // Print encoding to std output
+                writer.newLine();
+            }
+            writer.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class LZdecode {
@@ -23,7 +24,7 @@ public class LZdecode {
         	while ((line = reader.readLine())!=null){
             	//Grabbing the output of the LZencoder 
             	String [] encodedOutput =  line.split(" ");
-			    System.out.println(encodedOutput);
+			    // System.out.println(Arrays.toString(encodedOutput));
 
             	//if it is the end of the values decoded 
 				phraseNumList.add(Integer.parseInt(encodedOutput[0]));//pasin
