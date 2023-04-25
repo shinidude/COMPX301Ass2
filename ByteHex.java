@@ -12,7 +12,7 @@ class ByteHex {
         }
         return stringArr ;
     }
-
+    
     public static byte [] convertH2B(String hexStr){
         byte [] byteArr; 
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
@@ -26,7 +26,6 @@ class ByteHex {
             byteArr[i] = byteStream.toByteArray()[i];
             System.out.println(byteArr[i]);
         }
-        System.out.println(byteArr);
         return byteArr;
     }
     public static void main(String[] args) {

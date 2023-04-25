@@ -73,7 +73,7 @@ public class LZdecode {
 						trackerlist.add(i,joinedString);//Add this in the trackerlist 
 					}
 				}
-    		}
+    	}
 		} catch (Exception e) {
 			// TODO: handle exception
 			e.printStackTrace();
@@ -89,21 +89,16 @@ public class LZdecode {
 	private static void hex2String(String hex){
 		try {
 			OutputStreamWriter writer = new OutputStreamWriter(System.out);
-			ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    		for (int i = 0; i < hex.length(); i += 2) {
-      			String str = hex.substring(i, i + 2);
-      			int byteVal = Integer.parseInt(str, 16);
-      			byteStream.write(byteVal);
-    		} 
-    		String s = new String(byteStream.toByteArray(), Charset.forName("UTF-8"));
-<<<<<<< HEAD
-			byte[] val =byteStream.toByteArray();
-			for (byte b : byteStream.toByteArray()) {
+
+			byte [] byteArr = ByteHex.convertH2B(hex);
+    		String s = new String(byteArr, Charset.forName("UTF-8"));
+
+	
+			for (byte b : byteArr) {
 				System.out.println(b);
 			}
-=======
-			writer.write(s);
->>>>>>> 2812c8277a7691f34be36b8e6b2b9ef4ba03d2a2
+		writer.write(s);
+
 			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
