@@ -1,4 +1,6 @@
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStreamReader;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -11,11 +13,13 @@ public class LZdecode {
 	static ArrayList <String> trackerlist  = new ArrayList<>();//list of the decoded hex values which also helps to track the entered values 
 	public static void main(String[] args){
     	try {
-        	Scanner sc = new Scanner(System.in);
+        	 // reader object for standard input stream
+        	BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+			String line = "";
 
-        	while (sc.hasNextLine()){
+        	while ((line = reader.readLine())!=null){
             	//Grabbing the output of the LZencoder 
-            	String [] encodedOutput =  sc.nextLine().split(" ");
+            	String [] encodedOutput =  line.split(" ");
 			    System.out.println(encodedOutput);
 
             	//if it is the end of the values decoded 
@@ -25,7 +29,7 @@ public class LZdecode {
 			}
 			misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
         	}
-			sc.close(); //Closing the scanner 
+			reader.close(); //Closing the scanner 
 			//Turning the mismatched symbols into hex
 			for(int i = 0; i<misMatchSymbols.size(); i++){
 				hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
