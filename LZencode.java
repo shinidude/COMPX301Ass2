@@ -1,92 +1,108 @@
 import java.io.*;
-import java.util.ArrayList;
+import java.util.*;
 
 public class LZencode {
     public static void main(String[] args) {
         // reader object for standard input stream
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        // writer object for standard output stream
+        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
         
-        // Array to store the dictonaries for each encoded phrase (separated by line)
-        ArrayList<ArrayList<String>> dicts = new ArrayList<ArrayList<String>>();
+        // Create root node for trie
+        TrieNode root;
+        // create pointers for finding and adding entries to the trie
+        TrieNode pointMain;
+        TrieNode p;
+        int count; // counter for the index
+
+        String datum; // var for each character taken from the line to be encoded
 
         String hexChars; // var to store data in before encoding
         // try...catch... for any io errors
         try {
-            String line=""; // var to read stream into
+            String line; // var to read stream into
             // loop until end of stream, reading each line
             while ((line=reader.readLine()) != null) {
+                root = new TrieNode(0, "", null);
+                pointMain = root;
+                p = pointMain;
+                count=1;
                 hexChars = ""; // reset the data string
                 // get each line as it's bytes in an array, and convert to hex, before turning into a string
                 hexChars += String.join("", ByteHex.convertB2H(line.getBytes()));
-                dicts.add(encode(hexChars)); // append dictionary to array
-            }
-            // System.out.println(hexChars); // Testing output to ensure it is correct
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        try {
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-            ArrayList<String> dictEncoded;
-            // For each dictionary in array of dictonaries
-            for (int d=0; d<dicts.size(); d++) {
-                // get dictionary of encoded phrase
-                dictEncoded = dicts.get(d);
-                // For each item in dictionary of the encoded phrase
-                for (int i=1; i<dictEncoded.size(); i++) {
-                    writer.write(dictEncoded.get(i)); // Print encoding to std output
-                    writer.newLine();
+                
+                // loop through line of characters received
+                for (int i=0; i<hexChars.length(); i++) {
+                    // get single character from line
+                    datum = String.valueOf(hexChars.charAt(i));
+        
+                    // search for character in trie
+                    p = pointMain.search(datum);
+                    if (p == null) { // if null then character isnt in yet
+                        pointMain.addChild(count, datum); // add character to trie
+                        writer.write(pointMain.index + " " + Integer.parseInt(datum, 16)); // display to std output
+                        writer.newLine(); // move to new line
+                        count++; // increment phrase index
+                        pointMain = root; // reset main pointer
+                    } else {
+                        if (i == hexChars.length()-2) { // if second last character in line
+                            i++; // increment string index
+                            datum = String.valueOf(hexChars.charAt(i)); // get next character (last character)
+                            writer.write(p.index + " " + Integer.parseInt(datum, 16)); // write std output
+                            writer.newLine(); // write new line
+                        }
+                        pointMain = p; // increment pointers through trie
+                    }
                 }
+                // write line separator string and move to new line
                 writer.write("----");
                 writer.newLine();
-                writer.flush();
+                writer.flush(); // flush output from buffer to std output
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    /// method to do the encoding
-    /// Separate so that it can be call more easily
-    /// And to better keep the code clean
-    public static ArrayList<String> encode(String data) {
-        // Vars for encoding
-        String phrase = "";
-        int lastPhrasePos = 0;
-        // ArrayLists to manage phrases and their encodings
-        ArrayList<String> dictPhrases = new ArrayList<String>();
-        ArrayList<String> dictEncoded = new ArrayList<String>();
-        // init empty 0th indices
-        dictPhrases.add("");
-        dictEncoded.add("");
-
-        // For each element in the hex characters (each nibble)
-        for (int j=0; j<data.length(); j++) {
-            phrase += String.valueOf(data.charAt(j)); // Add character to current phrase
-
-            if (dictPhrases.contains(phrase)) { // If phrase has been encoded
-                lastPhrasePos = dictPhrases.indexOf(phrase); // Get pos of greatest matching phrase so far
-                if (j == data.length()-2) { // If on 2nd last character of input
-                    // Then we may have no more mismatched characters, so
-                    phrase += String.valueOf(data.charAt(j+1)); // Add next character to current phrase
-                    if (dictPhrases.contains(phrase)) {
-                        dictPhrases.add(phrase); // Add phrase to dictionary of known phrases
-                        // the parseInt converts hex to decimal value
-                        dictEncoded.add(lastPhrasePos + " " + Integer.parseInt( String.valueOf(  phrase.charAt( phrase.length()-1 )  ), 16 )); // add phrase encoding to dictionary
-
-                        j++; // increment loop counter to end loop early
-                    }
-                }
-            } else { // phrase up to here hasn't been encoded
-                dictPhrases.add(phrase); // Add phrase to dictionary of known phrases
-                // the parseInt converts hex to decimal value
-                dictEncoded.add(lastPhrasePos + " " + Integer.parseInt( String.valueOf(  phrase.charAt( phrase.length()-1 )  ), 16 )); // add phrase encoding to dictionary
-                phrase = ""; // reset current phrase
-                lastPhrasePos = 0; // reset last phrase pos
-            }
+    /*
+     * Class for multiway trie
+     */
+    public static class TrieNode {
+        // key vars to hold phrase index, and value of each node. and their children.
+        int index;
+        String val;
+        TrieNode parent;
+        ArrayList<TrieNode> children;
+    
+        // Constructor to init values
+        public TrieNode(int i, String v, TrieNode p) {
+            index = i;
+            val = v;
+            parent = p;
+            children  = new ArrayList<TrieNode>();
         }
-
-        // Return dictionary of the encoded phrase
-        return dictEncoded;
+    
+        /*
+         * Adds a child to the arraylist of the current node
+         */
+        public void addChild(int i, String v) {
+            children.add(new TrieNode(i, v, this));
+        }
+    
+        /*
+         * Searches the list of children if they have the value we're looking for
+         */
+        public TrieNode search(String v) {
+            if (children.size() == 0) { // if there are no children to this node
+                return null; // return null
+            }
+            for (TrieNode c : children) { // loop through children
+                if (c.val.equals(v)) { // check if they have the value we're looking for
+                    return c; // return the child node if it does
+                }
+            }
+            // if the value is not found among the children, return null
+            return null; 
+        }
     }
 }

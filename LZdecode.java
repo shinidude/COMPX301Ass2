@@ -14,13 +14,15 @@ public class LZdecode {
 			String line = "";
 
         	while ((line = reader.readLine())!=null){
-				if (line.compareTo("----")!=0) {
-					//Grabbing the output of the LZencoder 
+				if (line.compareTo("----")!=0) { // if line is line separator
+					//Grabbing stream from std input 
 					String [] encodedOutput =  line.split(" ");
 					phraseNumList.add(Integer.parseInt(encodedOutput[0]));//pasin
 					misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
 				} else {
+					// loop through mismatched symbols
 					for(int i = 0; i<misMatchSymbols.size(); i++){
+						// add to arraylist of hex characters
 						hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
 					}
 
@@ -29,6 +31,7 @@ public class LZdecode {
 					//Turning the hex output into string 
 					displayOutput(String.join("", trackerlist));
 
+					// reset necessary array lists
 					phraseNumList = new ArrayList<Integer>();
 					misMatchSymbols = new ArrayList<Integer>();
 					hexSymbols = new ArrayList<String>();
@@ -36,17 +39,7 @@ public class LZdecode {
 				}
         	}
 			reader.close(); //Closing the scanner 
-			// //Turning the mismatched symbols into hex
-			// for(int i = 0; i<misMatchSymbols.size(); i++){
-			// 	hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
-			// }
-			
-			// //Getting the decoded hex output 
-			// decode();
-			// //Turning the hex output into string 
-			// displayOutput(String.join("", trackerlist));
     } catch (Exception e) {
-        // TODO: handle exception
         e.printStackTrace();
     }
 }
@@ -75,7 +68,6 @@ public class LZdecode {
 				}
     	}
 		} catch (Exception e) {
-			// TODO: handle exception
 			e.printStackTrace();
 		}	
 	}
@@ -95,7 +87,6 @@ public class LZdecode {
 			writer.newLine();
 			writer.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	} 
