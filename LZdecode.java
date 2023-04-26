@@ -1,7 +1,4 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 
 public class LZdecode {
@@ -17,25 +14,37 @@ public class LZdecode {
 			String line = "";
 
         	while ((line = reader.readLine())!=null){
+				if (line.compareTo("----")!=0) {
 					//Grabbing the output of the LZencoder 
 					String [] encodedOutput =  line.split(" ");
 					phraseNumList.add(Integer.parseInt(encodedOutput[0]));//pasin
-					if(encodedOutput[1].toString().compareTo("$") != 0){
-						misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
-					}else{
-						break;
+					misMatchSymbols.add(Integer.parseInt(encodedOutput[1]));
+				} else {
+					for(int i = 0; i<misMatchSymbols.size(); i++){
+						hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
 					}
+
+					//Getting the decoded hex output 
+					decode();
+					//Turning the hex output into string 
+					displayOutput(String.join("", trackerlist));
+
+					phraseNumList = new ArrayList<Integer>();
+					misMatchSymbols = new ArrayList<Integer>();
+					hexSymbols = new ArrayList<String>();
+					trackerlist  = new ArrayList<>();
+				}
         	}
 			reader.close(); //Closing the scanner 
-			//Turning the mismatched symbols into hex
-			for(int i = 0; i<misMatchSymbols.size(); i++){
-				hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
-			}
+			// //Turning the mismatched symbols into hex
+			// for(int i = 0; i<misMatchSymbols.size(); i++){
+			// 	hexSymbols.add(Integer.toHexString(misMatchSymbols.get(i)));
+			// }
 			
-			//Getting the decoded hex output 
-			decode();
-			//Turning the hex output into string 
-			displayOutput(String.join("", trackerlist));
+			// //Getting the decoded hex output 
+			// decode();
+			// //Turning the hex output into string 
+			// displayOutput(String.join("", trackerlist));
     } catch (Exception e) {
         // TODO: handle exception
         e.printStackTrace();
@@ -78,16 +87,12 @@ public class LZdecode {
 	 */
 	private static void displayOutput(String hex){
 		try {
-			OutputStreamWriter writer = new OutputStreamWriter(System.out);
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
 			byte[] byteArr = ByteHex.convertH2B(hex);
-			int [] intArr = new int [byteArr.length];
 			for(int i= 0; i<byteArr.length;i++){
-				intArr[i]=Byte.toUnsignedInt(byteArr[i]);
+				writer.write(Byte.toUnsignedInt(byteArr[i]));
 			}
-			for (int i : intArr) {
-				writer.write(i);
-			}
-
+			writer.newLine();
 			writer.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

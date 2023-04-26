@@ -17,9 +17,6 @@ class ByteHex {
               int byteVal = Integer.parseInt(str, 16);
               byteStream.write(byteVal);
         } 
-        for (byte i : byteStream.toByteArray()) {
-            System.out.println(i);
-        }
         return  byteStream.toByteArray();
     }
     public static void main(String[] args) {
