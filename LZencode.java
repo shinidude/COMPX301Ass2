@@ -29,7 +29,7 @@ public class LZencode {
                 count=1;
                 hexChars = ""; // reset the data string
                 // get each line as it's bytes in an array, and convert to hex, before turning into a string
-                hexChars += String.join("", ByteHex.convertB2H(line.getBytes()));
+                hexChars = String.join("", ByteHex.convertB2H(line.getBytes()));
                 
                 // loop through line of characters received
                 for (int i=0; i<hexChars.length(); i++) {

@@ -6,7 +6,7 @@ public class LZdecode {
     static  ArrayList<Integer> phraseNumList = new ArrayList<Integer>();//where the phrase numbers are listed
     static ArrayList<Integer> misMatchSymbols = new ArrayList<Integer>(); //where the mismatched numbers are listed 
 	static ArrayList <String> hexSymbols = new ArrayList<String>();//list of decimal mismatch symbols turned into hex
-	static ArrayList <String> trackerlist  = new ArrayList<>();//list of the decoded hex values which also helps to track the entered values 
+	static ArrayList <String> trackerList  = new ArrayList<>();//list of the decoded hex values which also helps to track the entered values 
 	public static void main(String[] args){
     	try {
         	 // reader object for standard input stream
@@ -29,13 +29,14 @@ public class LZdecode {
 					//Getting the decoded hex output 
 					decode();
 					//Turning the hex output into string 
-					displayOutput(String.join("", trackerlist));
+					// System.err.println("TEST: "+String.join("", trackerList).length()%2);
+					displayOutput(String.join("", trackerList));
 
 					// reset necessary array lists
 					phraseNumList = new ArrayList<Integer>();
 					misMatchSymbols = new ArrayList<Integer>();
 					hexSymbols = new ArrayList<String>();
-					trackerlist  = new ArrayList<>();
+					trackerList  = new ArrayList<>();
 				}
         	}
 			reader.close(); //Closing the scanner 
@@ -50,23 +51,23 @@ public class LZdecode {
 	 */
 	public static void decode(){
 		try {
-			StringBuilder data =new StringBuilder(); 
+			StringBuilder data = new StringBuilder(); 
 			String joinedString = "";
 			int  phraseNum; 
-			for(int i = 0; i<phraseNumList.size();i++ ){
+			for(int i = 0; i<phraseNumList.size();i++ ) {
 				phraseNum = phraseNumList.get(i);
-				if(phraseNum ==0){//not in the tracklist yet 
-					trackerlist.add(hexSymbols.get(i));//Add it in the tracklist 
+				if(phraseNum == 0){//not in the tracklist yet
+					trackerList.add(hexSymbols.get(i));//Add it in the tracklist 
 				}else{//if it exist in the tracklist 
-					data =  new StringBuilder(trackerlist.get(phraseNum-1));//Grab the data based on he phrased num in the tracklist
+					data =  new StringBuilder(trackerList.get(phraseNum-1));//Grab the data based on the phrase num in the tracklist
 					if(hexSymbols.size()==i){//if there are no hex symbols anymore 
-						trackerlist.add(i,data.toString()); //Add the associated data based on its phrasenumber in the tracker list 
+						trackerList.add(i,data.toString()); //Add the associated data based on its phrasenumber in the tracker list 
 					}else{//if there are still more symbols 
 						joinedString = data.append(hexSymbols.get(i)).toString(); //join the associated data before the actual hexSybmol
-						trackerlist.add(i,joinedString);//Add this in the trackerlist 
+						trackerList.add(i,joinedString);//Add this in the trackerList 
 					}
 				}
-    	}
+    		}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
