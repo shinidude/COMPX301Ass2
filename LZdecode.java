@@ -80,12 +80,12 @@ public class LZdecode {
 	 */
 	private static void displayOutput(String hex){
 		try {
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));
-			byte[] byteArr = ByteHex.convertH2B(hex);
-			for(int i= 0; i<byteArr.length;i++){
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(System.out));//Used to write on console 
+			byte[] byteArr = ByteHex.convertH2B(hex); //Converting hexstring into byte array
+			for(int i= 0; i<byteArr.length;i++){ //printing each bytes onto the console
 				writer.write(Byte.toUnsignedInt(byteArr[i]));
 			}
-			writer.newLine();
+			writer.newLine();//Add a newline 
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();

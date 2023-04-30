@@ -1,21 +1,13 @@
 class ByteHex {
+
     public static String [] convertB2H(byte[] bytes){
         String [] stringArr = new String [bytes.length];  
+        //Turning each bytes into hex
         for(int i= 0; i<bytes.length; i++){
             stringArr[i] = String.format("%02x", bytes[i]);
         }
         return stringArr ;
     }
-
-    // public static byte [] convertH2B(String hexStr){
-    //     ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-    //     for (int i = 0; i < hexStr.length(); i += 2) {
-    //           String str = hexStr.substring(i, i + 2);
-    //           int byteVal = Integer.parseInt(str, 16);
-    //           byteStream.write(byteVal);
-    //     } 
-    //     return  byteStream.toByteArray();
-    // }
 
     public static byte [] convertH2B(String hexStr){
         // Setting up char array to convert and byte array to move into
